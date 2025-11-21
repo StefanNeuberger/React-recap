@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 body {
-  margin: 0;
+  margin: 0 auto;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  max-width: 1400px;
   min-height: 100vh;
   background-color: var(--background);
   color: var(--foreground);
+  width: 100%;
 }
 
 @custom-variant dark (&:is(.dark *), @media (prefers-color-scheme: dark));
