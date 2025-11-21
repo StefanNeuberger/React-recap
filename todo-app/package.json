@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
     "build": "tsc -b && node ./node_modules/vite/bin/vite.js build",
-    "lint": "eslint .",
-    "preview": "node ./node_modules/vite/bin/vite.js preview"
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "preview": "node ./node_modules/vite/bin/vite.js preview",
+    "openapi:pull": "curl -s http://localhost:8080/v3/api-docs > ./openapi.json",
+    "client:generate": "npm run openapi:pull && npm run orval",
+    "orval": "orval --config ./orval.config.ts",
+    "orval:watch": "orval --config ./orval.config.ts --watch"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
+    "@tanstack/react-query": "^5.90.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.17"
@@ -25,6 +30,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "orval": "^8.0.0-rc.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
