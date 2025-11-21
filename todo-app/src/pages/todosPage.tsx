@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   getGetAllQueryKey,
@@ -10,6 +10,10 @@ import type { Todo } from "@/api/generated/model/todo";
 import { TodoStatus } from "@/api/generated/model/todoStatus";
 import { AddTodoDialog } from "@/components/todos/AddTodoDialog";
 import { TodoColumn } from "@/components/todos/TodoColumn";
+import {
+  FireworksOverlay,
+  type FireworkInstance,
+} from "@/components/visuals/FireworksOverlay";
 
 const STATUS_SECTIONS = [
   { label: "Open", value: TodoStatus.OPEN },
@@ -23,6 +27,7 @@ const STATUS_SECTIONS = [
 export function TodosPage() {
   const queryClient = useQueryClient();
   const todosQuery = useGetAll();
+  const [fireworks, setFireworks] = useState<FireworkInstance[]>([]);
 
   const invalidateTodos = () =>
     queryClient.invalidateQueries({ queryKey: getGetAllQueryKey() });
@@ -69,6 +74,33 @@ export function TodosPage() {
     });
   };
 
+  const launchFireworks = () => {
+    const palette = [
+      "var(--color-primary)",
+      "var(--color-accent)",
+      "var(--color-secondary)",
+      "var(--color-foreground-accent-light)",
+    ];
+
+    Array.from({ length: 3 }).forEach((_, index) => {
+      const id = Date.now() + index;
+      const firework: FireworkInstance = {
+        id,
+        x: 20 + Math.random() * 60,
+        y: 20 + Math.random() * 40,
+        color: palette[index % palette.length],
+      };
+
+      setTimeout(() => {
+        setFireworks((prev) => [...prev, firework]);
+        setTimeout(
+          () => setFireworks((prev) => prev.filter((item) => item.id !== id)),
+          1600
+        );
+      }, index * 120);
+    });
+  };
+
   return (
     <div className="space-y-8 text-foreground">
       <section className="space-y-6">
@@ -79,7 +111,7 @@ export function TodosPage() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <AddTodoDialog />
+            <AddTodoDialog onCreated={launchFireworks} />
             {todosQuery.isLoading && (
               <span className="text-sm text-muted-foreground">Loading…</span>
             )}
@@ -104,6 +136,7 @@ export function TodosPage() {
           ))}
         </div>
       </section>
+      <FireworksOverlay items={fireworks} />
     </div>
   );
 }

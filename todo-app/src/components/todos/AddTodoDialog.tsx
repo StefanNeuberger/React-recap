@@ -21,7 +21,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { TodoStatus } from "../../api/generated/model/todoStatus";
 import { getGetAllQueryKey, usePostTodo } from "@/api/generated/todoClient";
 import type { Todo } from "@/api/generated/model/todo";
@@ -31,7 +31,11 @@ export type AddTodoFormValues = {
   status: TodoStatus;
 };
 
-export function AddTodoDialog() {
+type AddTodoDialogProps = {
+  onCreated?: () => void;
+};
+
+export function AddTodoDialog({ onCreated }: AddTodoDialogProps) {
   const [open, setOpen] = useState(false);
   const form = useForm<AddTodoFormValues>({
     defaultValues: {
@@ -50,6 +54,7 @@ export function AddTodoDialog() {
         setOpen(false);
         invalidateTodos();
         toast.success("Todo created successfully");
+        onCreated?.();
       },
       onError: () => {
         toast.error("Could not create the todo. Please try again.");
