@@ -9,7 +9,7 @@ import {
 import type { Todo } from "@/api/generated/model/todo";
 import { TodoStatus } from "@/api/generated/model/todoStatus";
 import { AddTodoDialog } from "@/components/todos/AddTodoDialog";
-import { TodoCard } from "@/components/todos/TodoCard";
+import { TodoColumn } from "@/components/todos/TodoColumn";
 
 const STATUS_SECTIONS = [
   { label: "Open", value: TodoStatus.OPEN },
@@ -92,44 +92,16 @@ export function TodosPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {STATUS_SECTIONS.map((section) => {
-            const items = todosByStatus[section.value] ?? [];
-            return (
-              <div
-                key={section.value}
-                className=" border border-border bg-card p-4 shadow"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">{section.label}</h3>
-                  <span className="text-sm text-muted-foreground">
-                    {items.length} items
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  {items.length === 0 && (
-                    <p className="rounded-xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
-                      Nothing in this lane yet.
-                    </p>
-                  )}
-
-                  {items.map((todo) => (
-                    <TodoCard
-                      key={todo.id}
-                      todo={todo}
-                      onStatusChange={(status) =>
-                        handleStatusChange(todo, status)
-                      }
-                      onDelete={() => deleteTodo.mutate({ id: todo.id })}
-                      disableActions={
-                        deleteTodo.isPending || updateTodo.isPending
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          {STATUS_SECTIONS.map((section) => (
+            <TodoColumn
+              key={section.value}
+              title={section.label}
+              todos={todosByStatus[section.value] ?? []}
+              isMutating={deleteTodo.isPending || updateTodo.isPending}
+              onStatusChange={handleStatusChange}
+              onDelete={(todo) => deleteTodo.mutate({ id: todo.id })}
+            />
+          ))}
         </div>
       </section>
     </div>
