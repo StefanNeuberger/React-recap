@@ -75,29 +75,37 @@ export function TodosPage() {
   };
 
   const launchFireworks = () => {
-    const palette = [
-      "var(--color-primary)",
-      "var(--color-accent)",
-      "var(--color-secondary)",
-      "var(--color-foreground-accent-light)",
+    const palettes: string[][] = [
+      ["#FFE066", "#FFD23F", "#FFBF00", "#FF9F1C", "#FFD700", "#FFF5B7"],
+      ["#90E0EF", "#48CAE4", "#00B4D8", "#0096C7", "#ADE8F4", "#CAF0F8"],
+      ["#F4A261", "#E76F51", "#E9C46A", "#2A9D8F", "#F4D19B", "#F2CC8F"],
+      ["#B5179E", "#F72585", "#7209B7", "#560BAD", "#480CA8", "#4CC9F0"],
+      ["#06D6A0", "#1B9AAA", "#118AB2", "#FFD166", "#EF476F", "#073B4C"],
+      ["#FF6F91", "#FFC75F", "#F9F871", "#D65DB1", "#845EC2", "#FF9671"],
+      ["#90BE6D", "#43AA8B", "#4D908E", "#577590", "#277DA1", "#F9C74F"],
     ];
 
-    Array.from({ length: 3 }).forEach((_, index) => {
+    palettes.forEach((palette, index) => {
       const id = Date.now() + index;
       const firework: FireworkInstance = {
         id,
-        x: 20 + Math.random() * 60,
-        y: 20 + Math.random() * 40,
-        color: palette[index % palette.length],
+        originX: 20 + Math.random() * 80,
+        originY: 40 + Math.random() * 20,
+        offsetX: -50,
+        offsetY: -30 - Math.random() * 20,
+        initialY: 60 + Math.random() * 10,
+        finalSize: 30 + Math.random() * 20,
+        colors: palette,
+        delay: index * 150,
       };
 
       setTimeout(() => {
         setFireworks((prev) => [...prev, firework]);
         setTimeout(
           () => setFireworks((prev) => prev.filter((item) => item.id !== id)),
-          1600
+          2000
         );
-      }, index * 120);
+      }, firework.delay);
     });
   };
 

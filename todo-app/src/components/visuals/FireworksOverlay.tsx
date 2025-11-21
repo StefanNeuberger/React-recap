@@ -2,9 +2,14 @@ import type { CSSProperties } from "react";
 
 export type FireworkInstance = {
   id: number;
-  x: number;
-  y: number;
-  color: string;
+  originX: number;
+  originY: number;
+  offsetX: number;
+  offsetY: number;
+  initialY: number;
+  finalSize: number;
+  colors: string[];
+  delay: number;
 };
 
 type FireworksOverlayProps = {
@@ -24,9 +29,20 @@ export function FireworksOverlay({ items }: FireworksOverlayProps) {
           className="firework"
           style={
             {
-              "--firework-color": item.color,
-              "--firework-x": `${item.x}%`,
-              "--firework-y": `${item.y}%`,
+              "--origin-x": `${item.originX}%`,
+              "--origin-y": `${item.originY}%`,
+              "--x": `${item.offsetX}vmin`,
+              "--y": `${item.offsetY}vmin`,
+              "--initialSize": "0.5vmin",
+              "--finalSize": `${item.finalSize}vmin`,
+              "--initialY": `${item.initialY}vmin`,
+              "--color1": item.colors[0],
+              "--color2": item.colors[1],
+              "--color3": item.colors[2],
+              "--color4": item.colors[3],
+              "--color5": item.colors[4],
+              "--color6": item.colors[5],
+              "--firework-delay": `${item.delay}ms`,
             } as CSSProperties
           }
         />
@@ -34,5 +50,3 @@ export function FireworksOverlay({ items }: FireworksOverlayProps) {
     </div>
   );
 }
-
-
