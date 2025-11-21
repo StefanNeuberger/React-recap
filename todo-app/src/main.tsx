@@ -5,12 +5,16 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { queryClient } from "./lib/queryClient.ts";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <main>
+          <App />
+          <Toaster />
+        </main>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>
