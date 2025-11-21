@@ -7,8 +7,14 @@
  */
 import type { TodoStatus } from './todoStatus';
 
+/**
+ * Todo entity exposed through the API
+ */
 export interface Todo {
-  id?: string;
-  description?: string;
-  status?: TodoStatus;
+  /** Unique identifier of the todo */
+  id: string;
+  /** Human readable description */
+  description: string;
+  /** Current status flag */
+  status: TodoStatus;
 }

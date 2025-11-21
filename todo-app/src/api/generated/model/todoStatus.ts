@@ -6,6 +6,9 @@
  * OpenAPI spec version: v1.0.0
  */
 
+/**
+ * Current status flag
+ */
 export type TodoStatus = typeof TodoStatus[keyof typeof TodoStatus];
 
 
